@@ -1,0 +1,31 @@
+﻿@model AliciasWebDisplay.Models.LoginViewModel
+<div class="container login-container">
+    <div class="card login-card">
+        <form method="post" asp-action="Login">
+            <h2 class="text-center mb-4">Log in</h2>
+            <hr class="mb-4" />
+
+            <!-- User Code Input -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="UserCode" name="UserCode" required>
+                <label for="UserCode">User Code</label>
+            </div>
+
+            <!-- Access Code Input -->
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="AccessCode" name="AccessCode" required>
+                <label for="AccessCode">Access Code</label>
+            </div>
+
+            <!-- Remember Me Checkbox -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="RememberMe" asp-for="RememberMe">
+                <label class="form-check-label" for="RememberMe">
+                    Remember Me
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+    </div>
+</div>

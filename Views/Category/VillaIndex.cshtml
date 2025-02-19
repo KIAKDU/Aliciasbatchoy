@@ -1,0 +1,86 @@
+﻿@model List<VillaCategory>
+@{
+    var isAdmin = Context.Session.GetString("IsAdmin");
+    Console.WriteLine($"IsAdmin session value: {isAdmin}"); // Debugging line
+}
+<link rel="stylesheet" href="~/css/category.css" />
+
+<!-- Sticky Header Section -->
+<div class="sticky-top bg-white shadow-sm p-3 mb-4">
+    <h2 class="mb-0">
+        ALICIAS VILLA
+        <br />
+        CATEGORY
+    </h2>
+    @if (TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-success mt-2">
+            <strong>Success!</strong> @TempData["AlertMessage"]
+        </div>
+    }
+    <div class="mt-3">
+        <a class="btn btn-outline-primary btn-sm" asp-controller="Products" asp-action="VillaIndex" role="Button">BACK</a>
+         @if (isAdmin == "True")
+         {
+          <a asp-controller="Category" asp-action="VillaCreate" class="btn btn-success btn-sm">NEW CATEGORY</a>
+         }
+    </div>
+</div>
+
+<!-- Scrollable Table with Sticky Header -->
+<div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+    <table class="table table-bordered table-hover text-center">
+        <thead class="table-light sticky-header">
+            <tr>
+                <th>Category Code</th>
+                <th>Category</th>
+                <th>Active</th>
+                 @if (isAdmin == "True")
+            {
+                <th>Action</th>
+            }
+            </tr>
+        </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.CategoryCode</td>
+                <td>@category.Category</td>            
+                <td>@category.Active</td>
+                @if (isAdmin == "True")
+                {
+                <td style="white-space: nowrap;">
+                    <a class="btn btn-primary btn-sm" asp-controller="Category" asp-action="VillaEdit" asp-route-categoryCode="@category.CategoryCode">Edit</a>
+
+
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@category.CategoryCode">
+                        Delete
+                    </button>
+
+                    <div class="modal fade" id="deleteModal-@category.CategoryCode" tabindex="-1" aria-labelledby="deleteModalLabel-@category.CategoryCode" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel-@category.CategoryCode">Confirm Deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete the category "@category.Category"?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form asp-controller="Category" asp-action="DeleteVilla" asp-route-categoryCode="@category.CategoryCode" method="post">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

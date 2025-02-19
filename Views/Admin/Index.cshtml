@@ -1,0 +1,72 @@
+﻿@model List<Users>
+<link rel="stylesheet" href="~/css/product.css" />
+<!-- Sticky Header Section -->
+<div class="sticky-top bg-white shadow-sm p-3 mb-4">
+    <h2 class="mb-0">
+       Users
+    </h2>
+    @if (TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["AlertMessage"]
+        </div>
+    }
+
+    <div class="mt-3">
+        <a class="btn btn-outline-primary btn-sm" asp-controller="Home" asp-action="Index" role="Button">BACK</a>
+        <a asp-controller="Admin" asp-action="Create" class="btn btn-success btn-sm">NEW USER</a>
+    </div>
+</div>
+
+<!-- Scrollable Table with Sticky Header -->
+<div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+    <table class="table table-bordered table-hover text-center">
+        <thead class="table-light sticky-header">
+            <tr>
+                <th>User Code</th>
+                <th>Name</th>
+                <th>Admin</th>
+                <th>Active</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var users in Model)
+            {
+                <tr>
+                    <td>@users.UserCode</td>
+                    <td>@users.Name</td>
+                    <td>@users.Admin</td>
+                    <td>@users.Active</td>
+                    <td style="white-space: nowrap;">
+                        <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="Edit" asp-route-userCode="@users.UserCode">Edit</a>
+
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@users.UserCode">
+                            Delete
+                        </button>
+
+                        <div class="modal fade" id="deleteModal-@users.UserCode" tabindex="-1" aria-labelledby="deleteModalLabel-@users.UserCode" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel-@users.UserCode">Confirm Deletion</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">    
+                                        Are you sure you want to delete the user "@users.UserCode"?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <form asp-controller="Admin" asp-action="Delete" asp-route-userCode="@users.UserCode" method="post">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

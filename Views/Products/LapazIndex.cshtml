@@ -1,0 +1,100 @@
+﻿@model List<ProductDto>
+@{
+    var isAdmin = Context.Session.GetString("IsAdmin");
+    Console.WriteLine($"IsAdmin session value: {isAdmin}"); // Debugging line
+}
+<link rel="stylesheet" href="~/css/product.css" />
+
+    <!-- Sticky Header Section -->
+    <div class="sticky-top bg-white shadow-sm p-3 mb-4">
+        <h2 class="mb-0">
+            List Of Products
+            <br />
+            Alicias Lapaz
+        </h2>
+        @if (TempData["AlertMessage"] != null)
+        {
+            <div class="alert alert-success mt-2">
+                <strong>Success!</strong> @TempData["AlertMessage"]
+            </div>
+        }
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <form class="d-flex" asp-action="LapazIndex" method="get" asp-controller="Products">
+                    <input name="searchString" class="form-control me-2 form-control-sm" type="search" placeholder="Enter Product Code or Product Name" aria-label="Search" />
+                    <button type="submit" class="btn btn-primary btn-sm">SEARCH</button>
+                </form>
+
+                <a asp-action="LapazIndex" class="btn btn-secondary btn-sm mt-2">FULL LIST</a>
+            @if (isAdmin == "True")
+            {
+                <a asp-controller="Products" asp-action="LapazCreate" class="btn btn-success btn-sm mt-2">NEW PRODUCT</a>
+                <a asp-controller="Category" asp-action="LapazIndex" class="btn btn-success btn-sm mt-2">CATEGORY</a>
+            }               
+               
+            <a asp-controller="StockOnHand" asp-action="LapazSOHIndex" class="btn btn-success btn-sm mt-2">STOCK ON HAND</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scrollable Table with Sticky Header -->
+    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+        <table class="table table-bordered table-hover text-center">
+            <thead class="table-light sticky-header">
+                <tr>
+                    <th>Product Code</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Active</th>
+                    <th>Selling Price</th>
+                @if (isAdmin == "True")
+                {
+                    <th>Action</th>
+                }
+            </tr>
+            </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.ProductCode</td>
+                <td>@product.Product</td>
+                <td>@($"{product.Category} {product.CategoryCode}")</td>
+                <td>@product.Active</td>
+                <td>₱@product.SellingPrice</td>
+                    @if (isAdmin == "True")
+                    {
+                <td style="white-space: nowrap;">
+                    <a class="btn btn-primary btn-sm" asp-controller="Products" asp-action="LapazEdit" asp-route-productCode="@product.ProductCode">Edit</a>
+
+
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@product.ProductCode">
+                        Delete
+                    </button>
+
+                    <div class="modal fade" id="deleteModal-@product.ProductCode" tabindex="-1" aria-labelledby="deleteModalLabel-@product.ProductCode" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel-@product.ProductCode">Confirm Deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete the product "@product.Product"?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form asp-controller="Products" asp-action="DeleteLapaz" asp-route-productCode="@product.ProductCode" method="post">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                    }
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

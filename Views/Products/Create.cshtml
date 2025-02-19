@@ -1,0 +1,60 @@
+﻿@model ProductDto
+
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h2 class="text-center mb-5">New Product (Alicias Jaro)</h2>
+
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <!-- Product Name -->
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Product Name</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="Product" placeholder="Enter product name" />
+                    <span asp-validation-for="Product" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Category Dropdown -->
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label" for="SelectedCategoryCode">Category</label>
+                <div class="col-sm-8">
+                    <select class="form-control" asp-for="SelectedCategoryCode" asp-items="Model.Categories">
+                        <option value="">-- Select a Category --</option>
+                    </select>
+                    <span asp-validation-for="SelectedCategoryCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Active Status -->
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Active</label>
+                <div class="col-sm-8">
+                    <select class="form-control" asp-for="Active">
+                        <option value="true">TRUE</option>
+                        <option value="false">FALSE</option>
+                    </select>
+                    <span asp-validation-for="Active" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Selling Price -->
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Selling Price</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="SellingPrice" placeholder="Enter selling price" />
+                    <span asp-validation-for="SellingPrice" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="row">
+                <div class="offset-sm-4 col-sm-4 d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="col-sm-4 d-grid">
+                    <a class="btn btn-outline-primary" asp-controller="Products" asp-action="Index" role="button">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

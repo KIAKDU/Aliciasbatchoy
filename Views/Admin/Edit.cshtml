@@ -1,0 +1,62 @@
+﻿@model Users
+@{
+}
+
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h2 class="text-center mb-5">Edit User</h2>
+
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <label class="col col-form-label">User Code</label>
+                <div class="col-sm-8">
+                    <!-- Hidden field for UserCode -->
+                    <input type="hidden" asp-for="UserCode" />
+                    <p class="form-control-plaintext">@Model.UserCode</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col col-form-label">Name</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col col-form-label">Access Code</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="AccessCode" />
+                    <span asp-validation-for="AccessCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Admin</label>
+                <div class="col-sm-8">
+                    <select class="form-control" asp-for="Admin">
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Active</label>
+                <div class="col-sm-8">
+                    <select class="form-control" asp-for="Active">
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-sm-4 col-sm-4 d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="col-sm-4 d-grid">
+                    <a class="btn btn-outline-primary" asp-controller="Admin" asp-action="Index" role="button">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
